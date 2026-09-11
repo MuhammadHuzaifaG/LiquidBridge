@@ -22,7 +22,6 @@
 * [Deployment Guide](https://www.google.com/search?q=%23deployment-guide)
 * [Pitch Deck](https://www.google.com/search?q=%23pitch-deck)
 * [Innovation Highlights](https://www.google.com/search?q=%23innovation-highlights)
-* [Future Roadmap](https://www.google.com/search?q=%23future-roadmap)
 * [Contributing](https://www.google.com/search?q=%23contributing)
 
 ---
