@@ -25,6 +25,7 @@
 * [Contributing](https://www.google.com/search?q=%23contributing)
 
 ---
+<img width="1331" height="538" alt="Capture" src="https://github.com/user-attachments/assets/245f35fc-60f7-4ad9-bbb9-51a0fbb42bb9" />
 
 ## Problem Statement
 
@@ -102,6 +103,7 @@ Settle & Return Tokens
 * **Notifications** - Real-time transaction alerts
 
 ---
+<img width="1116" height="589" alt="doc" src="https://github.com/user-attachments/assets/83c4f21b-80a0-4b20-95f8-cf9874ca792f" />
 
 ## Technology Stack
 
