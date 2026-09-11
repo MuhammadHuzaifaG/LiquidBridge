@@ -1,0 +1,15 @@
+{
+  "name": "liquidbridge",
+  "version": "1.0.0",
+  "description": "Cross-chain liquidity aggregator",
+  "main": "backend/server.js",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && python -m http.server 8000",
+    "contracts:compile": "cd contracts && npx hardhat compile",
+    "contracts:deploy": "cd contracts && npx hardhat run scripts/deploy.js",
+    "test": "cd backend && npm test"
+  },
+  "keywords": ["DeFi", "Web3", "Blockchain", "Liquidity"],
+  "author": "Muhammad Huzaifa",
+}

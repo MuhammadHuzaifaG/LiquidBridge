@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiquidBridge - Cross-Chain Liquidity Aggregator</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌉</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+        <p>Loading LiquidBridge...</p>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🌉</span>
+                <span class="logo-text">LiquidBridge</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#swap" class="nav-link">Swap</a></li>
+                <li><a href="#liquidity" class="nav-link">Liquidity</a></li>
+                <li><a href="#stats" class="nav-link">Analytics</a></li>
+                <li><a href="#docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="wallet-connect">
+                <button id="walletBtn" class="btn-wallet">Connect Wallet</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Cross-Chain Liquidity Aggregator</h1>
+                <p class="hero-subtitle">Optimize your token swaps across multiple blockchains with minimal slippage and maximum efficiency</p>
+                <div class="hero-buttons">
+                    <button id="startSwap" class="btn btn-primary">Start Swapping</button>
+                    <a href="#docs" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <h3 id="totalSwaps">0</h3>
+                    <p>Total Swaps</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalVolume">$0</h3>
+                    <p>Total Volume</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalUsers">0</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="activePools">0</h3>
+                    <p>Liquidity Pools</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN SWAP SECTION -->
+        <section id="swap" class="swap-section">
+            <div class="swap-container">
+                <h2>Swap Tokens</h2>
+                
+                <div class="swap-card">
+                    <!-- CHAIN SELECTOR -->
+                    <div class="chain-selector">
+                        <label>Source Chain</label>
+                        <select id="sourceChain" class="select-input">
+                            <option value="">Select Chain...</option>
+                        </select>
+                    </div>
+
+                    <!-- FROM TOKEN -->
+                    <div class="token-input-group">
+                        <div class="input-header">
+                            <label>From</label>
+                            <span class="balance">Balance: <span id="balanceFrom">0</span></span>
+                        </div>
+                        <div class="token-input-container">
+                            <input 
+                                type="number" 
+                                id="amountIn" 
+                                class="input-field" 
+                                placeholder="0.0" 
+                                step="0.0001"
+                            >
+                            <button id="selectTokenFrom" class="btn-token-select">
+                                <span id="tokenFromDisplay">Select Token</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                        </div>
+                        <div class="token-price" id="priceFrom">$0.00</div>
+                    </div>
+
+                    <!-- SWAP DIRECTION BUTTON -->
+                    <button id="swapDirection" class="btn-swap-direction">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <polyline points="19 12 12 19 5 12"></polyline>
+                        </svg>
+                    </button>
+
+                    <!-- TO TOKEN -->
+                    <div class="token-input-group">
+                        <div class="input-header">
+                            <label>To</label>
+                            <span class="balance">Balance: <span id="balanceTo">0</span></span>
+                        </div>
+                        <div class="token-input-container">
+                            <input 
+                                type="number" 
+                                id="amountOut" 
+                                class="input-field" 
+                                placeholder="0.0" 
+                                disabled
+                            >
+                            <button id="selectTokenTo" class="btn-token-select">
+                                <span id="tokenToDisplay">Select Token</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                        </div>
+                        <div class="token-price" id="priceTo">$0.00</div>
+                    </div>
+
+                    <!-- ROUTE DETAILS -->
+                    <div class="route-details" id="routeDetails" style="display: none;">
+                        <div class="detail-row">
+                            <span>Best Pool</span>
+                            <span id="bestPool">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Price Impact</span>
+                            <span id="priceImpact" class="impact-good">0.00%</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Slippage</span>
+                            <span id="slippage">0.00%</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Liquidity</span>
+                            <span id="liquidity">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Min. Received</span>
+                            <span id="minReceived">-</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIPPAGE TOLERANCE -->
+                    <div class="slippage-control">
+                        <label>Slippage Tolerance</label>
+                        <div class="slippage-buttons">
+                            <button class="btn-slippage" data-value="0.1">0.1%</button>
+                            <button class="btn-slippage active" data-value="0.5">0.5%</button>
+                            <button class="btn-slippage" data-value="1">1%</button>
+                            <input type="number" id="customSlippage" class="input-slippage" placeholder="Custom%" min="0" max="50" step="0.1">
+                        </div>
+                    </div>
+
+                    <!-- SWAP BUTTON -->
+                    <button id="swapBtn" class="btn btn-primary btn-large" disabled>
+                        Connect Wallet to Swap
+                    </button>
+
+                    <!-- TRANSACTION STATUS -->
+                    <div id="txStatus" class="tx-status" style="display: none;">
+                        <div class="status-content">
+                            <span id="statusText"></span>
+                            <a id="txLink" href="#" target="_blank" class="tx-link">View on Explorer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT SWAPS -->
+            <div class="recent-swaps">
+                <h3>Recent Swaps</h3>
+                <div id="recentSwapsList" class="swaps-list">
+                    <div class="empty-state">No swaps yet. Start trading!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOKEN SELECTOR MODAL -->
+        <div id="tokenModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Select Token</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input 
+                        type="text" 
+                        id="tokenSearch" 
+                        class="input-field" 
+                        placeholder="Search by name or address..."
+                    >
+                    <div id="tokenList" class="token-list">
+                        <div class="loading">Loading tokens...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIQUIDITY SECTION -->
+        <section id="liquidity" class="liquidity-section">
+            <h2>Liquidity Pools</h2>
+            <div class="pool-filters">
+                <select id="poolChainFilter" class="select-input">
+                    <option value="">All Chains</option>
+                </select>
+                <input type="text" id="poolSearch" class="input-field" placeholder="Search pools...">
+            </div>
+            <div id="poolsList" class="pools-grid">
+                <div class="loading">Loading pools...</div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS SECTION -->
+        <section id="stats" class="stats-section">
+            <h2>Analytics & Statistics</h2>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h4>Volume by Chain</h4>
+                    <canvas id="volumeChart"></canvas>
+                </div>
+                <div class="stats-card">
+                    <h4>Success Rate</h4>
+                    <div class="success-rate" id="successRate">0%</div>
+                </div>
+                <div class="stats-card">
+                    <h4>Average Slippage</h4>
+                    <div class="avg-slippage" id="avgSlippage">0.00%</div>
+                </div>
+                <div class="stats-card">
+                    <h4>Top Tokens</h4>
+                    <ul id="topTokens" class="top-tokens-list">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- USER PROFILE SECTION -->
+        <section class="user-profile" id="userProfile" style="display: none;">
+            <h2>Your Activity</h2>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <span>Total Swaps</span>
+                    <strong id="userSwaps">0</strong>
+                </div>
+                <div class="profile-stat">
+                    <span>Total Volume</span>
+                    <strong id="userVolume">$0</strong>
+                </div>
+                <div class="profile-stat">
+                    <span>Fees Paid</span>
+                    <strong id="userFees">$0</strong>
+                </div>
+            </div>
+            <div class="transaction-history">
+                <h3>Transaction History</h3>
+                <div id="userTxList" class="tx-history-list">
+                    <div class="empty-state">No transactions yet</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCUMENTATION SECTION -->
+        <section id="docs" class="docs-section">
+            <h2>Documentation</h2>
+            <div class="docs-content">
+                <div class="doc-item">
+                    <h3>🚀 Getting Started</h3>
+                    <p>Connect your Web3 wallet and select your source and destination tokens. LiquidBridge will automatically find the best route with minimal slippage.</p>
+                </div>
+                <div class="doc-item">
+                    <h3>🔄 How Routing Works</h3>
+                    <p>Our algorithm analyzes multiple liquidity pools across chains and calculates the optimal swap path to maximize output and minimize price impact.</p>
+                </div>
+                <div class="doc-item">
+                    <h3>⛓️ Supported Chains</h3>
+                    <p>We support Ethereum, Polygon, Avalanche, BSC, and Arbitrum with instant cross-chain settlement.</p>
+                </div>
+                <div class="doc-item">
+                    <h3>💰 Fees</h3>
+                    <p>Protocol fee: 0.25% on swaps. No hidden charges. Fee is deducted from output amount.</p>
+                </div>
+                <div class="doc-item">
+                    <h3>🔒 Security</h3>
+                    <p>Smart contracts are audited and use ReentrancyGuard. All transactions are transparent on-chain.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>LiquidBridge</h4>
+                <p>Cross-chain liquidity aggregation protocol</p>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#" target="_blank">GitHub</a></li>
+                    <li><a href="#" target="_blank">Discord</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026-28 LiquidBridge. Built for the future of DeFi</p>
+        </div>
+    </footer>
+
+    <!-- NOTIFICATION SYSTEM -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
