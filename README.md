@@ -181,7 +181,6 @@ Arbitrum    (Chain ID: 42161)
 ---
 
 ## Project Structure
-
 ```
 LiquidBridge/
 │
@@ -191,8 +190,6 @@ LiquidBridge/
 │   ├── interfaces/
 │   │   ├── ILiquidityPool.sol         # Pool interface
 │   │   └── IRouter.sol                # Router interface
-│   └── lib/
-│       └── SafeMath.sol               # Math utilities
 │
 ├── backend/                            # Node.js Backend
 │   ├── server.js                      # Express server entry
@@ -219,9 +216,6 @@ LiquidBridge/
 │   │   ├── routingService.js          # Route calculation
 │   │   ├── priceService.js            # Price aggregation
 │   │   └── blockchainService.js       # Chain interaction
-│   ├── middleware/
-│   │   ├── auth.js                    # Authentication
-│   │   └── errorHandler.js            # Error handling
 │   └── utils/
 │       ├── logger.js                  # Logging
 │       └── validators.js              # Input validation
@@ -239,14 +233,7 @@ LiquidBridge/
 │   │   ├── web3Utils.js               # Web3 helpers
 │   │   ├── formatters.js              # Data formatting
 │   │   └── api.js                     # API client
-│   └── assets/
-│       ├── icons/                     # SVG icons
-│       └── images/                    # Images
 │
-├── tests/                              # Test Suite
-│   ├── contracts/
-│   │   ├── LiquidBridgeAggregator.test.js
-│   │   └── MockPools.test.js
 │   ├── backend/
 │   │   ├── quote.test.js
 │   │   ├── swap.test.js
@@ -255,31 +242,15 @@ LiquidBridge/
 │       ├── app.test.js
 │       └── utils.test.js
 │
-├── docs/                               # Documentation
-│   ├── API_DOCUMENTATION.md           # API specs
-│   ├── SMART_CONTRACT_GUIDE.md        # Contract guide
-│   ├── DEPLOYMENT_GUIDE.md            # Deployment steps
-│   ├── ARCHITECTURE.md                # System design
-│   └── SECURITY_AUDIT.md              # Security info
-│
 ├── scripts/                            # Utility Scripts
 │   ├── deploy.js                      # Contract deployment
 │   ├── registerPools.js               # Pool registration
 │   ├── seed-data.js                   # Data seeding
 │   └── migration.js                   # Data migration
 │
-├── .env.example                        # Environment template
-├── .env.local                          # Local env (not tracked)
-├── .env.production                     # Production env
 ├── .gitignore                          # Git ignore rules
-├── package.json                        # NPM dependencies
-├── package-lock.json                   # Dependency lock
-├── truffle-config.js                  # Truffle config
-├── hardhat.config.js                  # Hardhat config
 ├── README.md                           # This file
-├── LICENSE                             # MIT License
-├── CHANGELOG.md                        # Version history
-└── CONTRIBUTION.md                     # Contribution guide
+└── LICENSE                             # MIT License
 
 ```
 
@@ -315,7 +286,7 @@ LiquidBridge/
 
 ```bash
 # Clone the project
-git clone https://github.com/yourusername/LiquidBridge.git
+git clone https://github.com/MuhammadHuzaifaG/LiquidBridge.git
 
 # Navigate to project
 cd LiquidBridge
